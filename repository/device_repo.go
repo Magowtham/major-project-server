@@ -37,3 +37,33 @@ func (r *PostgresRepository) AddStep(steps []*models.DeviceStep) error {
 	}
 	return nil
 }
+
+func (r *PostgresRepository) GetSteps() (*models.DeviceStepResponse, error) {
+	query1 := `SELECT step_number,step_time,step_temp FROM steps`
+
+	rows, err := r.db.Query(query1)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var deviceStepResponse models.DeviceStepResponse
+
+	for rows.Next() {
+		var deviceStep models.DeviceStep
+
+		if err := rows.Scan(&deviceStep.StepNumber, &deviceStep.Time, &deviceStep.Temperature); err != nil {
+			return nil, err
+		}
+
+		deviceStepResponse.Steps = append(deviceStepResponse.Steps, &deviceStep)
+	}
+
+	query2 := `DELETE FROM steps`
+
+	if _, err := r.db.Exec(query2); err != nil {
+		return nil, err
+	}
+
+	return &deviceStepResponse, nil
+}
