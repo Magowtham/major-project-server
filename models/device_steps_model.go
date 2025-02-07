@@ -17,4 +17,5 @@ type DeviceStepResponse struct {
 type DeviceRepo interface {
 	AddStep(steps []*DeviceStep) error
 	GetSteps() (*DeviceStepResponse, error)
+	DeleteSteps() error
 }

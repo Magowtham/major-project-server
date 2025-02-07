@@ -59,11 +59,15 @@ func (r *PostgresRepository) GetSteps() (*models.DeviceStepResponse, error) {
 		deviceStepResponse.Steps = append(deviceStepResponse.Steps, &deviceStep)
 	}
 
+	return &deviceStepResponse, nil
+}
+
+func (r *PostgresRepository) DeleteSteps() error {
 	query2 := `DELETE FROM steps`
 
 	if _, err := r.db.Exec(query2); err != nil {
-		return nil, err
+		return err
 	}
 
-	return &deviceStepResponse, nil
+	return nil
 }

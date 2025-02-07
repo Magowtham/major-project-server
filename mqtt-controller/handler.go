@@ -36,3 +36,10 @@ func (h *MqttMessageHandler) HandleMqttMessage(c mqtt.Client, m mqtt.Message) {
 
 	c.Publish("d1", 1, false, jsonResponse)
 }
+
+func (h *MqttMessageHandler) HandleProcessStopMessage(c mqtt.Client, m mqtt.Message) {
+	if err := h.repo.DeleteSteps(); err != nil {
+		log.Println(err)
+		return
+	}
+}

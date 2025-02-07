@@ -12,6 +12,7 @@ func Router(repo models.DeviceRepo) *mux.Router {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/steps", deviceHandler.DeviceAddStepHandler).Methods("POST")
+	router.HandleFunc("/steps", deviceHandler.GetStepsHandler).Methods("GET")
 
 	return router
 }

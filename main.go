@@ -65,7 +65,9 @@ func main() {
 		}
 
 		c.Unsubscribe("/message/processor")
+		c.Unsubscribe("/stop/process")
 		c.Subscribe("/message/processor", 1, mqttHandler.HandleMqttMessage)
+		c.Subscribe("/stop/process", 1, mqttHandler.HandleProcessStopMessage)
 	}
 
 	client := mqtt.NewClient(opts)
@@ -76,6 +78,7 @@ func main() {
 
 	if client.IsConnected() {
 		client.Subscribe("/message/processor", 1, mqttHandler.HandleMqttMessage)
+		client.Subscribe("/stop/process", 1, mqttHandler.HandleProcessStopMessage)
 	}
 
 	route := routes.Router(postgresRepo)
