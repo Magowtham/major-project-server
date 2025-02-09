@@ -4,6 +4,7 @@ go 1.23.2
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/jackc/pgx/v5 v5.7.2
 	github.com/joho/godotenv v1.5.1
