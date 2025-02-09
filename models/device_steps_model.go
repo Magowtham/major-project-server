@@ -18,4 +18,7 @@ type DeviceRepo interface {
 	AddStep(steps []*DeviceStep) error
 	GetSteps() (*DeviceStepResponse, error)
 	DeleteSteps() error
+	UpdateAnalytics(step, temp string) error
+	GetAnalytics() ([]*Analytics, error)
+	DeleteAnalytics() error
 }

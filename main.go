@@ -11,6 +11,7 @@ import (
 	"github.com/Magowtham/dehydrater-server/repository"
 	"github.com/Magowtham/dehydrater-server/routes"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 )
 
@@ -51,7 +52,9 @@ func main() {
 	var brokerAddress = fmt.Sprintf("tcp://%s:%s", "34.47.250.228", "1883")
 
 	opts.AddBroker(brokerAddress)
-	opts.SetClientID("majorproject/message/processor")
+
+	id := uuid.NewString()
+	opts.SetClientID(id)
 
 	opts.OnConnect = func(c mqtt.Client) {
 		log.Println("connected to broker")
@@ -68,6 +71,7 @@ func main() {
 		c.Unsubscribe("/stop/process")
 		c.Subscribe("/message/processor", 1, mqttHandler.HandleMqttMessage)
 		c.Subscribe("/stop/process", 1, mqttHandler.HandleProcessStopMessage)
+		c.Subscribe("app", 1, mqttHandler.HandleAnalyticsUpdate)
 	}
 
 	client := mqtt.NewClient(opts)
@@ -79,6 +83,7 @@ func main() {
 	if client.IsConnected() {
 		client.Subscribe("/message/processor", 1, mqttHandler.HandleMqttMessage)
 		client.Subscribe("/stop/process", 1, mqttHandler.HandleProcessStopMessage)
+		client.Subscribe("app", 1, mqttHandler.HandleAnalyticsUpdate)
 	}
 
 	route := routes.Router(postgresRepo)

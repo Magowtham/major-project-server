@@ -13,6 +13,7 @@ func Router(repo models.DeviceRepo) *mux.Router {
 
 	router.HandleFunc("/steps", deviceHandler.DeviceAddStepHandler).Methods("POST")
 	router.HandleFunc("/steps", deviceHandler.GetStepsHandler).Methods("GET")
+	router.HandleFunc("/analytics", deviceHandler.GetAnalyticsHandler).Methods("GET")
 
 	return router
 }

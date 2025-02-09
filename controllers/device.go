@@ -54,3 +54,22 @@ func (h *DeviceHandler) GetStepsHandler(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(steps)
 }
+
+func (h *DeviceHandler) GetAnalyticsHandler(w http.ResponseWriter, r *http.Request) {
+	res, err := h.repo.GetAnalytics()
+
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	var analyticsResponse = models.AnalyticsResponse{
+		CoOrdinates: res,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(analyticsResponse)
+}
